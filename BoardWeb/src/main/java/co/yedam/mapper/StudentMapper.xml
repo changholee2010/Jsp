@@ -22,5 +22,9 @@
     where std_no=#{stdNo}
   </update>
   
+  <delete id="deleteStudent" parameterType="string">
+    delete from tbl_student
+    where std_no = #{stdNo}
+  </delete>
 
 </mapper>
