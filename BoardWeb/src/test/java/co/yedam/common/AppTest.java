@@ -25,7 +25,7 @@ public class AppTest {
 		// sqlSession.update("co.yedam.mapper.StudentMapper.updateStudent", std);
 		mapper.updateStudent(std);
 		sqlSession.commit();
-
+// 요기.....
 		List<Student> list //
 //				= sqlSession.selectList("co.yedam.mapper.StudentMapper.selectBlog");
 				= mapper.selectBlog();
