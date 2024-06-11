@@ -26,5 +26,12 @@
     delete from tbl_student
     where std_no = #{stdNo}
   </delete>
+  
+  <select id="getStudent" parameterType="string" 
+          resultType="co.yedam.vo.Student">
+    select *
+    from tbl_student
+    where std_no = #{stdNo}
+  </select>
 
 </mapper>

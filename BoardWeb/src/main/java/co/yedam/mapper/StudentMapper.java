@@ -9,4 +9,6 @@ public interface StudentMapper {
 	public int insertStudent(Student student);
 	public int updateStudent(Student student);
 	public int deleteStudent(String stdNo);
+	// 단건조회.
+	public Student getStudent(String stdNo);
 }
