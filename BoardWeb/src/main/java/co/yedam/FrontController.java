@@ -11,8 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import co.yedam.common.Control;
+import co.yedam.web.AddBoard;
 import co.yedam.web.AddStudent;
+import co.yedam.web.BoardForm;
 import co.yedam.web.BoardList;
+import co.yedam.web.GetBoard;
 import co.yedam.web.MainControl;
 import co.yedam.web.ProductControl;
 import co.yedam.web.StudentForm;
@@ -38,6 +41,12 @@ public class FrontController extends HttpServlet {
 
 		// 게시글목록.
 		map.put("/boardList.do", new BoardList());
+		// 상세화면.
+		map.put("/getBoard.do", new GetBoard());
+		// 글등록화면.
+		map.put("/addForm.do", new BoardForm());
+		// 글등록 후 목록이동.
+		map.put("/addBoard.do", new AddBoard());
 	}
 
 	@Override
@@ -45,11 +54,9 @@ public class FrontController extends HttpServlet {
 			throws ServletException, IOException {
 
 		String uri = req.getRequestURI(); // http://localhost/BoardWeb/main.do
-//		System.out.println("uri: " + uri); // /BoardWeb/main.do
 		String context = req.getContextPath(); // /BoardWeb => project name.
-//		System.out.println("context: " + context);
 		String page = uri.substring(context.length());
-//		System.out.println("page: " + page);
+		System.out.println("page: " + page);
 
 		Control result = map.get(page);
 		result.exec(req, resp);

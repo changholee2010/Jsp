@@ -1,40 +1,34 @@
 package co.yedam.web;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import co.yedam.common.Control;
-import co.yedam.common.PageDTO;
 import co.yedam.service.BoardService;
 import co.yedam.service.BoardServiceImpl;
 import co.yedam.vo.BoardVO;
 
-/*
- * oracle db에 글목록을 조회 -> boardList.jsp 출력.
- */
-public class BoardList implements Control {
+public class GetBoard implements Control {
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO 파라미터정보를 읽어서 게시글번호 조회.
+		// board.jsp 페이지에 출력.
+		String bno = req.getParameter("bno");
 		String page = req.getParameter("page");
-		page = page == null ? "1" : page;
 
 		BoardService svc = new BoardServiceImpl();
-		List<BoardVO> list = svc.boardList(Integer.parseInt(page));
+		BoardVO brd = svc.getBoard(Integer.parseInt(bno));
 
-		req.setAttribute("boardList", list);
+		req.setAttribute("board", brd);
+		req.setAttribute("page", page);
 
-		// paging계산.
-		int totalCnt = svc.boardTotal(); // 1page ~ 25page
-		PageDTO dto = new PageDTO(Integer.parseInt(page), totalCnt); //
-		req.setAttribute("paging", dto);
-
-		req.getRequestDispatcher("WEB-INF/view/boardList.jsp")//
+		req.getRequestDispatcher("WEB-INF/view/board.jsp")//
 				.forward(req, resp);
+
 	}
 
 }

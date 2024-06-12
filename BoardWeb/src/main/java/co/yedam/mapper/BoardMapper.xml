@@ -4,11 +4,46 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="co.yedam.mapper.BoardMapper">
-	
+
 	<select id="boardList" resultType="co.yedam.vo.BoardVO">
-	  select *
-	  from board_tbl
-	  order by board_no
+		select *
+		from board_tbl
+		order by board_no
 	</select>
+
+	<select id="boardListPaging" parameterType="int"
+		resultType="co.yedam.vo.BoardVO">
+		select b.*
+		from (select rownum rn, a.*
+		      from (select *
+		            from board_tbl
+		            order by board_no desc) a
+		      <![CDATA[
+		      where rownum <= (#{page} * 5) ) b
+		      ]]>
+		where b.rn > (#{page} - 1) * 5
+	</select>
+
+	<select id="getTotalCnt" resultType="int">
+		select count(1)
+		from board_tbl
+	</select>
+
+	<select id="selectBoard" parameterType="int"
+		resultType="co.yedam.vo.BoardVO">
+		select board_no
+		      ,title
+		      ,content
+		      ,writer
+		      ,click_cnt
+		      ,creation_date
+		from board_tbl
+		where board_no = #{bno}
+	</select>
+
+	<insert id="insertBoard" parameterType="co.yedam.vo.BoardVO">
+		insert into board_tbl (board_no, title, content, writer)
+		values(board_seq.nextval, #{title}, #{content}, #{writer})
+	</insert>
 
 </mapper>
