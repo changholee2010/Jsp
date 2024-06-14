@@ -3,8 +3,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%@include file="header.jsp" %>
-
   <h3>main 페이지</h3>
   <%
     Student student = (Student) request.getAttribute("student");
@@ -21,5 +19,3 @@
         연락처: <%=std.getPhone() %></li>
     <%} %>
   </ul>
-
-<%@include file="footer.jsp" %>

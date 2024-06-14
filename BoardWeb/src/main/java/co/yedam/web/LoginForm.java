@@ -13,7 +13,7 @@ public class LoginForm implements Control {
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		req.getRequestDispatcher("WEB-INF/view/loginForm.jsp")//
+		req.getRequestDispatcher("member/loginForm.tiles")//
 				.forward(req, resp);
 	}
 

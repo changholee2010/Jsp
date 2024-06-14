@@ -41,7 +41,7 @@ public class BoardList implements Control {
 		PageDTO dto = new PageDTO(Integer.parseInt(page), totalCnt); //
 		req.setAttribute("paging", dto);
 
-		req.getRequestDispatcher("WEB-INF/view/boardList.jsp")//
+		req.getRequestDispatcher("board/boardList.tiles")//
 				.forward(req, resp);
 	}
 

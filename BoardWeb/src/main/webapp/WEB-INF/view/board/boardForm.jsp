@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@include file="../public/header.jsp"%>
+
 <h3>게시글 등록(boardForm.jsp)</h3>
 <form action="addBoard.do">
     <input type="hidden" name="writer" value="${logId }">
@@ -23,4 +23,3 @@
         </tr>
     </table>
 </form>
-<%@include file="../public/footer.jsp"%>

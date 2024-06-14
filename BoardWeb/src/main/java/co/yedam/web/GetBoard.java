@@ -30,7 +30,7 @@ public class GetBoard implements Control {
 		req.setAttribute("searchCondition", sc);
 		req.setAttribute("keyword", kw);
 
-		req.getRequestDispatcher("WEB-INF/view/board.jsp")//
+		req.getRequestDispatcher("board/board.tiles")//
 				.forward(req, resp);
 
 	}

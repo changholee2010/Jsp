@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!-- modifyBoardForm.jsp -->
-<%@include file="../public/header.jsp"%>
+
 <h3>수정화면(modifyBoardForm.jsp)</h3>
 <%
   BoardVO board = (BoardVO) request.getAttribute("board");
@@ -39,5 +39,3 @@
     </tr>
   </table>
 </form>
-
-<%@include file="../public/footer.jsp"%>

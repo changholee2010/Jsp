@@ -3,8 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<jsp:include page="../public/header.jsp" />
-
 <h3>상세화면(board.jsp)</h3>
 <form name="myFrm" action="removeForm.do">
   <input type="hidden" value="${board.boardNo }" name="bno">
@@ -62,6 +60,7 @@
     </tr>
   </table>
 </form>
+
 <script>
   document.querySelector('button.btn-warning')
     .addEventListener('click', function (e) {
@@ -71,5 +70,3 @@
       document.forms.myFrm.submit();
     });
 </script>
-
-<jsp:include page="../public/footer.jsp" />

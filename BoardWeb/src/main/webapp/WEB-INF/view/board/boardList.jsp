@@ -6,7 +6,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!-- "boardList"에 담긴 값을 읽어서 반복처리. -->
-<%@include file="../public/header.jsp" %>
 <style>
   .center {
     text-align: center;
@@ -105,5 +104,3 @@
 
   </div>
 </div>
-
-<%@include file="../public/footer.jsp" %>
