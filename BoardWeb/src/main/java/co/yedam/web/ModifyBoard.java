@@ -11,27 +11,30 @@ import co.yedam.service.BoardService;
 import co.yedam.service.BoardServiceImpl;
 import co.yedam.vo.BoardVO;
 
-public class GetBoard implements Control {
+public class ModifyBoard implements Control {
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO 파라미터정보를 읽어서 게시글번호 조회.
-		// board.jsp 페이지에 출력.
+		// TODO Auto-generated method stub
 		String bno = req.getParameter("bno");
-		String page = req.getParameter("page");
+		String title = req.getParameter("title");
+		String content = req.getParameter("content");
 		String sc = req.getParameter("searchCondition");
 		String kw = req.getParameter("keyword");
 
+		// editBoard메소드의 매개값.
+		BoardVO bvo = new BoardVO();
+		bvo.setBoardNo(Integer.parseInt(bno));
+		bvo.setTitle(title);
+		bvo.setContent(content);
+
 		BoardService svc = new BoardServiceImpl();
-		BoardVO brd = svc.getBoard(Integer.parseInt(bno));
-
-		req.setAttribute("board", brd);
-		req.setAttribute("page", page);
-		req.setAttribute("searchCondition", sc);
-		req.setAttribute("keyword", kw);
-
-		req.getRequestDispatcher("WEB-INF/view/board.jsp")//
-				.forward(req, resp);
+		if (svc.editBoard(bvo)) {
+			resp.sendRedirect("boardList.do?searchCondition=" + sc + "&keyword=" + kw);
+		} else {
+			req.getRequestDispatcher("WEB-INF/view/modifyBoardForm.jsp")//
+					.forward(req, resp);
+		}
 
 	}
 

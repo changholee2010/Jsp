@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import co.yedam.common.DataSource;
+import co.yedam.common.SearchVO;
 import co.yedam.mapper.BoardMapper;
 import co.yedam.vo.BoardVO;
 
@@ -17,14 +18,14 @@ public class BoardServiceImpl implements BoardService {
 	BoardMapper mapper = sqlSession.getMapper(BoardMapper.class);
 
 	@Override
-	public List<BoardVO> boardList(int page) {
+	public List<BoardVO> boardList(SearchVO search) {
 		// mapper등록된 기능 활용.
-		return mapper.boardListPaging(page);
+		return mapper.boardListPaging(search);
 	}
 
 	@Override
-	public int boardTotal() {
-		return mapper.getTotalCnt();
+	public int boardTotal(SearchVO search) {
+		return mapper.getTotalCnt(search);
 	}
 
 	@Override
@@ -39,14 +40,18 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public boolean editBoard(BoardVO bvo) {
-		// TODO Auto-generated method stub
-		return false;
+		return mapper.updateBoard(bvo) == 1;
 	}
 
 	@Override
 	public boolean removeBoard(int bno) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public boolean checkMember(String id, String pw) {
+		return mapper.selectMember(id, pw) == 1;
 	}
 
 }

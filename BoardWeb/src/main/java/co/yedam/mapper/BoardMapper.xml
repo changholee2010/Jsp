@@ -11,12 +11,26 @@
 		order by board_no
 	</select>
 
-	<select id="boardListPaging" parameterType="int"
+	<select id="boardListPaging" parameterType="co.yedam.common.SearchVO"
 		resultType="co.yedam.vo.BoardVO">
 		select b.*
 		from (select rownum rn, a.*
 		      from (select *
 		            from board_tbl
+		            <where>
+		              <choose>
+		                <when test="searchCondition == 'T'.toString() ">
+		                title like '%'||#{keyword}||'%'
+		                </when>
+		                <when test="searchCondition == 'W'.toString() ">
+		                writer like '%'||#{keyword}||'%'
+		                </when>
+		                <when test="searchCondition == 'TW'.toString() ">
+		                title like '%'||#{keyword}||'%' 
+		                  or writer like '%'||#{keyword}||'%'
+		                </when>
+		              </choose>
+		            </where>
 		            order by board_no desc) a
 		      <![CDATA[
 		      where rownum <= (#{page} * 5) ) b
@@ -24,9 +38,23 @@
 		where b.rn > (#{page} - 1) * 5
 	</select>
 
-	<select id="getTotalCnt" resultType="int">
+	<select id="getTotalCnt" resultType="int" parameterType="co.yedam.common.SearchVO">
 		select count(1)
 		from board_tbl
+		<where>
+		    <choose>
+		      <when test="searchCondition == 'T'.toString() ">
+		      title like '%'||#{keyword}||'%'
+		      </when>
+		      <when test="searchCondition == 'W'.toString() ">
+		      writer like '%'||#{keyword}||'%'
+		      </when>
+		      <when test="searchCondition == 'TW'.toString() ">
+		      title like '%'||#{keyword}||'%' 
+		        or writer like '%'||#{keyword}||'%'
+		      </when>
+		    </choose>
+		</where>
 	</select>
 
 	<select id="selectBoard" parameterType="int"
@@ -45,5 +73,19 @@
 		insert into board_tbl (board_no, title, content, writer)
 		values(board_seq.nextval, #{title}, #{content}, #{writer})
 	</insert>
+	
+	<update id="updateBoard" parameterType="co.yedam.vo.BoardVO">
+	    update board_tbl
+	    set title = #{title}
+	       ,content = #{content}
+	    where board_no = #{boardNo}
+	</update>
+	
+	<select id="selectMember" resultType="int">
+	    select count(1)
+	    from member_tbl
+	    where user_id = #{id}
+	    and   user_pw = #{pw}
+	</select>
 
 </mapper>
