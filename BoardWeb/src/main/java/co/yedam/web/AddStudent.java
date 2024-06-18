@@ -14,8 +14,7 @@ import co.yedam.vo.Student;
 public class AddStudent implements Control {
 
 	@Override
-	public void exec(HttpServletRequest req, HttpServletResponse resp) 
-			throws ServletException, IOException {
+	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String no = req.getParameter("sno");
 		String name = req.getParameter("sname");
@@ -29,13 +28,14 @@ public class AddStudent implements Control {
 		student.setStdName(name);
 		student.setPhone(phone);
 		student.setBldType(btype);
-
-		if (svc.addStudent(student)) {
+		try {
+			if (svc.addStudent(student)) {
 //			sqlSession.commit(); // 커밋.
-			System.out.println("정상등록...");
-			resp.sendRedirect("main.do");
-		} else {
-			System.out.println("등록실패");
+				System.out.println("정상등록...");
+				resp.sendRedirect("main.do");
+			}
+		} catch (Exception e) {
+
 			req.setAttribute("message", "처리중 오류가 발생.");
 			req.getRequestDispatcher("WEB-INF/view/studentForm.jsp").forward(req, resp);
 		}

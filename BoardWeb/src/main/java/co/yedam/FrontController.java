@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import co.yedam.common.Control;
 import co.yedam.web.AddBoard;
+import co.yedam.web.AddForm;
+import co.yedam.web.AddMember;
 import co.yedam.web.AddStudent;
 import co.yedam.web.BoardForm;
 import co.yedam.web.BoardList;
@@ -20,9 +22,11 @@ import co.yedam.web.LoginControl;
 import co.yedam.web.LoginForm;
 import co.yedam.web.LogoutControl;
 import co.yedam.web.MainControl;
+import co.yedam.web.MemberList;
 import co.yedam.web.ModifyBoard;
 import co.yedam.web.ModifyForm;
 import co.yedam.web.ProductControl;
+import co.yedam.web.ScriptForm;
 import co.yedam.web.StudentForm;
 
 // front -> 요청url(*.do) - 실행컨트롤 매칭.
@@ -62,6 +66,14 @@ public class FrontController extends HttpServlet {
 		map.put("/login.do", new LoginControl());
 		// 로그아웃
 		map.put("/logout.do", new LogoutControl());
+		// 회원목록(관리자템플릿)
+		map.put("/memberList.do", new MemberList());
+		// 회원등록.
+		map.put("/addMemberForm.do", new AddForm());
+		map.put("/addMember.do", new AddMember());
+
+		// 자바스크립트 연습용 페이지.
+		map.put("/script.do", new ScriptForm());
 	}
 
 	@Override

@@ -81,11 +81,22 @@
 	    where board_no = #{boardNo}
 	</update>
 	
-	<select id="selectMember" resultType="int">
-	    select count(1)
+	<select id="selectMember" resultType="co.yedam.vo.MemberVO">
+	    select *
 	    from member_tbl
 	    where user_id = #{id}
 	    and   user_pw = #{pw}
 	</select>
+	
+	<select id="selectMemberId" resultType="int">
+	    select count(1)
+	    from member_tbl
+	    where user_id = #{id}
+	</select>
+	
+	<insert id="insertMember" parameterType="co.yedam.vo.MemberVO">
+	  insert into member_tbl (user_id, user_pw, user_name)
+      values(#{userId}, #{userPw}, #{userName})
+	</insert>
 
 </mapper>
