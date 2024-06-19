@@ -98,5 +98,26 @@
 	  insert into member_tbl (user_id, user_pw, user_name)
       values(#{userId}, #{userPw}, #{userName})
 	</insert>
+	
+	<select id="memberList" resultType="co.yedam.vo.MemberVO">
+	  select *
+	  from member_tbl
+	</select>
+	
+	<insert id="insertMemberAjax" parameterType="co.yedam.vo.MemberVO">
+	  insert into member_tbl(user_id, user_pw, user_name, responsibility)
+	  values(#{userId}, #{userPw}, #{userName}, #{responsibility})
+	</insert>
+	
+	<select id="selectMemberAjax" parameterType="string">
+	  select count(1)
+	  from member_tbl
+	  where user_id = #{id}
+	</select>
+	
+	<delete id="deleteMemberAjax" parameterType="string">
+	  delete from member_tbl
+	  where user_id = #{id}
+	</delete>
 
 </mapper>

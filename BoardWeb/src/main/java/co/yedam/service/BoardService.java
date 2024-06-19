@@ -23,4 +23,9 @@ public interface BoardService {
 	// checkMember(id, pw)
 	MemberVO checkMember(String id, String pw);
 	Map<String, String> addMember(MemberVO mvo);
+	
+	List<MemberVO> memberList(); //
+	boolean addMemberAjax(MemberVO mvo);
+	boolean checkMemberId(String id);
+	boolean delMemberAjax(String id);
 }

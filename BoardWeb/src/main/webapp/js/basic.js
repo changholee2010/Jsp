@@ -19,7 +19,7 @@ for (let list of lists) {
 	let btn = document.createElement('button');
 	btn.innerText = '삭제';
 	btn.setAttribute('class', 'btn btn-primary');
-	btn.addEventListener('click', function() {
+	btn.addEventListener('click', function () {
 		btn.parentElement.remove();
 	}); // 이벤트유형, 실행코드
 	list.appendChild(btn);

@@ -24,4 +24,9 @@ public interface BoardMapper {
 	MemberVO selectMember(@Param("id") String id, @Param("pw") String pw);
 	int selectMemberId(String id);
 	int insertMember(MemberVO mvo);
+	
+	List<MemberVO> memberList();
+	int insertMemberAjax(MemberVO mvo);
+	int selectMemberAjax(String id);
+	int deleteMemberAjax(String id);
 }

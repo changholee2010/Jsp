@@ -10,7 +10,7 @@ document.querySelectorAll('.container-fluid table.table') // NodeList
 document.getElementById('fruit').remove();
 
 // 월을 변경하면 달력을 출력하는 이벤트를 등록(selectMonth).
-document.getElementById('selectMonth').addEventListener('change', function() {
+document.getElementById('selectMonth').addEventListener('change', function () {
 	makeCalendar(parseInt(this.value));
 })
 
@@ -35,6 +35,7 @@ function getLastDate(month = 6) {
 }
 
 makeCalendar(6);
+
 function makeCalendar(month = 6) {
 	let firstDay = getFirstDay(month); // 1일의 위치를 지정하기 위해서 공란의 갯수를 반환.
 	let lastDate = getLastDate(month); // 월의 마지막날을 반환하는 함수.
@@ -93,4 +94,3 @@ function makeCalendar(month = 6) {
 	document.getElementById('show').appendChild(tbl);
 
 }
-

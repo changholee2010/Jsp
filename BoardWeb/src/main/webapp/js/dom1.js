@@ -3,13 +3,13 @@
  */
 document.getElementById('fruit').style.display = 'none';
 
-document.querySelector('table.table tr:nth-of-type(5)')//
+document.querySelector('table.table tr:nth-of-type(5)') //
 	.setAttribute('align', 'center'); // 가운데 정렬.
 
 // 페이지 로딩하면서 회원3명 출력.
 console.log(myMembers);
 for (let mem of myMembers) {
-	document.getElementById('memberList')//
+	document.getElementById('memberList') //
 		.appendChild(addRow(mem));
 }
 
@@ -44,7 +44,7 @@ function allCheckFnc() {
 	// tbody의 하위에 있는 모든 input[type="checkbox"]의 속성을 변경.
 	console.log(this.checked); // 활용하면 편하게 작업이 가능.
 	//let checkVal = this.checked;
-	document.querySelectorAll('tbody#memberList tr')// NodeList [tr, tr, tr.....]
+	document.querySelectorAll('tbody#memberList tr') // NodeList [tr, tr, tr.....]
 		.forEach(item => item.children[5].children[0].checked = this.checked);
 }
 
@@ -85,17 +85,27 @@ function addMemberFnc() {
 		return;
 	}
 
-	document.getElementById('memberList')//
-		.appendChild(addRow({ id, name, phone, point }));
+	document.getElementById('memberList') //
+		.appendChild(addRow({
+			id,
+			name,
+			phone,
+			point
+		}));
 
 	document.getElementById('mid').value = "";
 	document.getElementById('mname').value = "";
 	document.getElementById('mphone').value = "";
 	document.getElementById('mpoint').value = "";
 
-}	// end of addMemberFnc()
+} // end of addMemberFnc()
 
-function addRow(member = { id, name, phone, point }) {
+function addRow(member = {
+	id,
+	name,
+	phone,
+	point
+}) {
 	// tr > td * 4
 	const tr = document.createElement('tr');
 	tr.addEventListener('click', showDetailFnc);

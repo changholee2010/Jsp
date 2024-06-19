@@ -27,7 +27,10 @@ const obj = {
 	age
 }
 
-function showObj(obj = { name: '홍길순', age: 25 }) {
+function showObj(obj = {
+	name: '홍길순',
+	age: 25
+}) {
 	return obj.name + ' - ' + obj.age;
 }
 console.log(showObj(obj));
@@ -37,7 +40,7 @@ console.log(showObj(obj));
 function showItem(item) {
 	let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'];
 
-	days.forEach(function(val) {
+	days.forEach(function (val) {
 		let span = document.createElement('span');
 		span.innerHTML = val + " ";
 		item.appendChild(span);

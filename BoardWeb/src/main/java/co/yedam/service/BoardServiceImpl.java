@@ -71,4 +71,24 @@ public class BoardServiceImpl implements BoardService {
 		result.put("message", "정상등록 완료.");
 		return result;
 	}
+
+	@Override
+	public List<MemberVO> memberList() {
+		return mapper.memberList();
+	}
+
+	@Override
+	public boolean addMemberAjax(MemberVO mvo) {
+		return mapper.insertMemberAjax(mvo) == 1;
+	}
+
+	@Override
+	public boolean checkMemberId(String id) {
+		return mapper.selectMemberAjax(id) == 1;
+	}
+
+	@Override
+	public boolean delMemberAjax(String id) {
+		return mapper.deleteMemberAjax(id) == 1;
+	}
 }
