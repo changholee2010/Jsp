@@ -2,20 +2,17 @@ package co.yedam.common;
 
 import org.apache.ibatis.session.SqlSession;
 
-import co.yedam.mapper.BoardMapper;
-import co.yedam.service.BoardService;
-import co.yedam.service.BoardServiceImpl;
+import co.yedam.mapper.ReplyMapper;
+import co.yedam.vo.ReplyVO;
 
 public class AppTest {
 	public static void main(String[] args) {
 		SqlSession sqlSession //
 				= DataSource.getInstance().openSession(true);
-		BoardMapper mapper = sqlSession.getMapper(BoardMapper.class);
+		ReplyMapper mapper = sqlSession.getMapper(ReplyMapper.class);
 
-		SearchVO search = new SearchVO(2, "", "");
-
-		mapper.boardListPaging(search)//
-				.forEach(bvo -> System.out.println(bvo));
-
+		// interface에 구현해 메소드가 하나만 있는 인터페이스: 함수형인터페이스.
+		mapper.selectListPaging(201, 5)//
+				.forEach(reply -> System.out.println(reply));
 	}
 }

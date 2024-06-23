@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.yedam.mapper.ReplyMapper">
+
+	<select id="selectList" parameterType="int">
+		select reply_no
+		      ,reply
+		      ,replyer
+		      ,reply_date
+		      ,board_no
+		from reply_tbl
+		where board_no = #{boardNo}
+	</select>
+	
+	<select id="selectListPaging">
+	    select b.*
+        from (select /*+INDEX_DESC(r REPLY_PK)*/ rownum rn, r.*
+              from reply_tbl r
+              where board_no = #{boardNo}) b
+        <![CDATA[
+        where b.rn <= (#{page}) * 5
+        ]]>
+        and   b.rn > (#{page} - 1) * 5
+	</select>
+
+	<select id="selectReply" parameterType="int">
+		select reply_no
+		      ,reply
+		      ,replyer
+		      ,reply_date
+		      ,board_no
+		from reply_tbl
+		where reply_no = #{replyNo}
+	</select>
+
+	<insert id="insertReply" parameterType="co.yedam.vo.ReplyVO">
+	  <selectKey resultType="int" keyProperty="replyNo" order="BEFORE">
+	    select reply_seq.nextval from dual
+	  </selectKey>
+		insert into reply_tbl (reply_no, reply, replyer, board_no)
+		values(#{replyNo}, #{reply}, #{replyer}, #{boardNo})
+	</insert>
+
+	<delete id="deleteReply" parameterType="int">
+		delete from reply_tbl
+		where reply_no = #{replyNo}
+	</delete>
+	
+	<select id="selectReplyCnt" parameterType="int">
+	  select count(1)
+	  from reply_tbl
+	  where board_no = #{bno}
+	</select>
+
+</mapper>
