@@ -6,7 +6,7 @@
 	<p>${message }</p>
 </c:if>
 
-<form action="addMember.do" method="post">
+<form action="addMember.do" method="post" enctype="multipart/form-data">
 	<table class="table">
 		<tr>
 			<th>아이디</th>
@@ -19,6 +19,10 @@
 		<tr>
 			<th>이름</th>
 			<td><input class="form-control" type="text" name="name"></td>
+		</tr>
+		<tr>
+			<th>이미지</th>
+			<td><input class="form-control" type="file" name="myImage"></td>
 		</tr>
 		<tr align="center">
 			<td colspan="2"><input type="submit" value="등록" class="btn btn-primary"></td>

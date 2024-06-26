@@ -81,6 +81,39 @@ document.getElementById('modBtn').addEventListener('click', function() {
 
 // 등록이벤트.
 document.getElementById('addBtn').addEventListener('click', function() {
+	const formData = new FormData(); // form-data처리.
+	const fileField = document.querySelector('#myPic');
+
+	formData.append("id", document.getElementById('uid').value);
+	formData.append("pw", document.getElementById('upw').value);
+	formData.append("name", document.getElementById('uname').value);
+	formData.append("myImage", fileField.files[0]);
+
+	upload(formData);
+})
+
+// fetch 파일 업로드.
+async function upload(formData) {
+	try {
+		const response = await fetch("addMember.do", {
+			method: "PUT",
+			body: formData,
+		});
+		const result = await response.json();
+		if (result.retCode == 'OK') {
+			alert('성공');
+			let newMem = result.retVal;
+			document.getElementById('list').appendChild(makeRow(newMem));
+		} else {
+			alert('등록처리중 예외발생.');
+		}
+	} catch (error) {
+		console.error("실패:", error);
+	}
+} // end of upload(formData).
+
+function addMemberFunc() {
+
 	let id = document.getElementById('uid').value;
 	let pw = document.getElementById('upw').value;
 	let nm = document.getElementById('uname').value;
@@ -102,8 +135,7 @@ document.getElementById('addBtn').addEventListener('click', function() {
 		}
 
 	}
-
-})
+} // end of addMemberFunc().
 
 // id 체크 이벤트
 document.getElementById('uid').addEventListener('change', function() {

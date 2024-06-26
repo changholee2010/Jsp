@@ -75,7 +75,6 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }
 </style>
 
-<h3>ajax연습.</h3>
 <div id="register">
   <table class="table">
     <tr>
@@ -92,6 +91,9 @@ body {font-family: Arial, Helvetica, sans-serif;}
                          <option value="User">사용자</option>
                          <option value="Admin">관리자</option>
                       </select></td>
+    </tr>
+    <tr>
+      <th>파일</th><td><input class="form-control" type="file" id="myPic"></td>
     </tr>
     <tr align="center">
       <td colspan="2"><button id="addBtn" class="btn btn-primary">등록</button></td>

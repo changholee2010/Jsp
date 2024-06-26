@@ -91,4 +91,9 @@ public class BoardServiceImpl implements BoardService {
 	public boolean delMemberAjax(String id) {
 		return mapper.deleteMemberAjax(id) == 1;
 	}
+
+	@Override
+	public boolean addMemberImage(MemberVO mvo) {
+		return mapper.insertMember(mvo) == 1;
+	}
 }

@@ -54,5 +54,19 @@
 	  from reply_tbl
 	  where board_no = #{bno}
 	</select>
+	
+	<insert id="insertCenter">
+		insert into center_tbl (id, center_name, sido, phone_number, address)
+		<foreach collection="array" item="center" 
+		  open=" select " close=" from dual " separator=" from dual union all select ">
+		  #{center.id}, #{center.centerName}, #{center.sido}, #{center.phoneNumber}, #{center.address} 
+		</foreach>
+	</insert>
+	
+	<select id="centerBysido" resultType="map">
+	    select sido as "sido", count(1) as "cnt"
+        from center_tbl
+        group by sido
+	</select>
 
 </mapper>
