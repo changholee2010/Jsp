@@ -24,6 +24,7 @@ import co.yedam.web.CenterInfo;
 import co.yedam.web.ChartForm;
 import co.yedam.web.CheckIdAjax;
 import co.yedam.web.GetBoard;
+import co.yedam.web.ImageDownload;
 import co.yedam.web.LoginControl;
 import co.yedam.web.LoginForm;
 import co.yedam.web.LogoutControl;
@@ -112,6 +113,7 @@ public class FrontController extends HttpServlet {
 		// 센터차트.
 		map.put("/chartForm.do", new ChartForm()); // 
 		map.put("/centerChart.do", new CenterChart());
+		map.put("/imageDownload.do", new ImageDownload());
 	}
 
 	@Override
