@@ -19,12 +19,17 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.session.SqlSession;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import co.yedam.common.Control;
+import co.yedam.common.DataSource;
+import co.yedam.mapper.ProductMapper;
+import co.yedam.vo.ProductVO;
 
 public class ImageDownload implements Control {
 	String sql = "";
@@ -36,6 +41,7 @@ public class ImageDownload implements Control {
 
 		// [ {"src":"http","name":"헬리우스"},{},{}]
 		Map<String, Object> resultMap = new HashMap<>();
+		ProductVO[] array = null;
 		int txnCnt = 0;
 
 		ServletInputStream sis = req.getInputStream();
@@ -43,6 +49,8 @@ public class ImageDownload implements Control {
 		List<Map<String, String>> list = mapper.readValue(sis, //
 				new TypeReference<List<Map<String, String>>>() {
 				});
+
+		array = new ProductVO[list.size()];
 
 		for (Map<String, String> map : list) {
 
@@ -60,12 +68,13 @@ public class ImageDownload implements Control {
 			System.out.println("src: " + imgSrc + ", dir: " + dir + ", name: " + prodName);
 			System.out.println("-----------------------------");
 			dongwonCreate(imgSrc, dir, prodName);
-			insertQuery(prodNo, prodName, prodDesc);
-			txnCnt++;
+//			insertQuery(prodNo, prodName, prodDesc);
+			array[txnCnt++] = new ProductVO(prodNo, prodName, prodDesc);
+
 //			fileCreate(src, dir, name);
 
 		}
-
+		executeQuery(array);
 		resultMap.put("retCode", "OK");
 		resultMap.put("txnCnt", txnCnt);
 		resultMap.put("sql", "begin delete from prod_tbl; " + sql + " commit;  end;");
@@ -74,6 +83,18 @@ public class ImageDownload implements Control {
 		resp.getWriter().print(gson.toJson(resultMap));
 
 		System.out.println("end of prog.");
+	}
+
+	// mapper 실행.
+	public void executeQuery(ProductVO[] array) {
+		SqlSession sqlSession = DataSource.getInstance().openSession(true);
+		ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
+
+		int delCnt = mapper.deleteProdAll();
+		System.out.println("delete cnt " + delCnt);
+
+		int cnt = mapper.insertProduct(array);
+		System.out.println("insert cnt " + cnt);
 	}
 
 	// 쿼리생성용.

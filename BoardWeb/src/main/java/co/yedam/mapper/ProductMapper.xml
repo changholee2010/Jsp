@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.yedam.mapper.ProductMapper">
+
+  <delete id="deleteProdAll">
+    delete from prod_tbl
+  </delete>
+
+	<insert id="insertProduct" parameterType="co.yedam.vo.ProductVO">
+		insert into prod_tbl (prod_no, prod_name, prod_desc, creation_date, ord_no)
+		<foreach collection="array" item="prod" open=" select a.*, prod_seq.nextval from ( " separator=" union all " close=" ) a">
+			select #{prod.prodNo}, #{prod.prodName}, #{prod.prodDesc}, sysdate from dual
+		</foreach>
+	</insert>
+
+</mapper>
