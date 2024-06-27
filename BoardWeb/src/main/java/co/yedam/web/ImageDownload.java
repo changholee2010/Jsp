@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,15 +21,23 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import co.yedam.common.Control;
 
 public class ImageDownload implements Control {
+	String sql = "";
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		resp.setContentType("text/json;charset=utf-8");
+
 		// [ {"src":"http","name":"헬리우스"},{},{}]
+		Map<String, Object> resultMap = new HashMap<>();
+		int txnCnt = 0;
+
 		ServletInputStream sis = req.getInputStream();
 		ObjectMapper mapper = new ObjectMapper();
 		List<Map<String, String>> list = mapper.readValue(sis, //
@@ -36,42 +45,77 @@ public class ImageDownload implements Control {
 				});
 
 		for (Map<String, String> map : list) {
-			String src = map.get("src");
-			String name = map.get("name");
+
+			String imgSrc = map.get("src"); // 이미지의 경로. 이미지 다운로드용.
+			String prodName = map.get("name"); // 상품의 이름. 데이터베이스 입력쿼리.
+			String prodDesc = map.get("desc"); // 상품의 간단설명. 데이터베이스 입력쿼리.
+			String prodNo = map.get("id"); // 상품의 간단설명. 데이터베이스 입력쿼리.
+//			String prodContent = map.get("content"); // 상품의 설명. 데이터베이스 입력쿼리.
+
 			// String[] str = name.split("/");
 			// String dir = str[0];
 			// name = str[1];
 			String dir = "dongwon";
 
-			System.out.println("src: " + src + ", dir: " + dir + ", name: " + name);
+			System.out.println("src: " + imgSrc + ", dir: " + dir + ", name: " + prodName);
 			System.out.println("-----------------------------");
+			dongwonCreate(imgSrc, dir, prodName);
+			insertQuery(prodNo, prodName, prodDesc);
+			txnCnt++;
 //			fileCreate(src, dir, name);
-			dongwonCreate(src, dir, name);
 
 		}
-		System.out.println("end of prog.");
 
+		resultMap.put("retCode", "OK");
+		resultMap.put("txnCnt", txnCnt);
+		resultMap.put("sql", "begin delete from prod_tbl; " + sql + " commit;  end;");
+
+		Gson gson = new GsonBuilder().create();
+		resp.getWriter().print(gson.toJson(resultMap));
+
+		System.out.println("end of prog.");
 	}
 
-	public void dongwonCreate(String src, String dir, String name) {
+	// 쿼리생성용.
+	public void insertQuery(String prodNo, String prodName, String prodDesc) {
+		// insert into prod_tbl (prod_no, prod_name, prod_desc, prod_content,
+		// creation_date)
+		// values(prod_seq.nextval, '팽이버섯 2입', '싱그러운 향의 아삭한 채소', 'html', sysdate);
+		String[] nameAry = prodName.split("");
+		String rName = "";
+		for (int i = 0; i < nameAry.length; i++) {
+			String str = nameAry[i];
+			if (str.equals("'") || str.equals("&") || str.equals("/")) {
+				continue;
+			}
+			rName += str;
+		}
+		String insertSQL = "insert into prod_tbl (prod_no, prod_name, prod_desc, creation_date, ord_no)";
+		insertSQL += " values('" + prodNo + "', '" + rName + "', '" + prodDesc + "', sysdate, prod_seq.nextval); ";
+
+		sql += insertSQL;
+	}
+
+	public void dongwonCreate(String imgSrc, String saveDir, String prodName) {
 		URL url;
 		SimpleDateFormat sdf = new SimpleDateFormat("HH_mm");
 
 		try {
-			url = new URL(src);
+			url = new URL(imgSrc);
 
 			InputStream is = null;
 			OutputStream os = null;
 
 			is = url.openStream();
 			BufferedInputStream bis = new BufferedInputStream(is);
-			String filePath = "c:/temp/" + sdf.format(new Date()) + "/" + dir.trim();
+			String filePath = "c:/temp/" + sdf.format(new Date()) + "/" + saveDir.trim();
 
 			File file = new File(filePath);
 			if (!file.exists()) {
 				file.mkdirs();
 			}
-			os = new BufferedOutputStream(new FileOutputStream(filePath + "/" + name.trim() + ".jpg"));
+			os = new BufferedOutputStream(new FileOutputStream(
+					filePath + "/" + prodName.trim().replaceAll("/", "").replace("*", "") + ".jpg"));
 			while (true) {
 				int data = bis.read();
 				if (data == -1) {
