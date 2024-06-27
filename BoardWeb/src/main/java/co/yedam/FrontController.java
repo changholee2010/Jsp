@@ -111,8 +111,9 @@ public class FrontController extends HttpServlet {
 		map.put("/centerInfo.do", new CenterInfo());
 
 		// 센터차트.
-		map.put("/chartForm.do", new ChartForm()); // 
+		map.put("/chartForm.do", new ChartForm()); //
 		map.put("/centerChart.do", new CenterChart());
+
 		map.put("/imageDownload.do", new ImageDownload());
 	}
 
