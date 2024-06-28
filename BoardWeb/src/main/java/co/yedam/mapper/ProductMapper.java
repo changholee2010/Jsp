@@ -1,8 +1,9 @@
 package co.yedam.mapper;
 
-import co.yedam.vo.ProductVO;
+import co.yedam.vo.TemplateVO;
 
 public interface ProductMapper {
 	int deleteProdAll();
-	int insertProduct(ProductVO[] array);
+	int insertTemplate(TemplateVO[] array);
+	int insertTemplate1(TemplateVO[] array);
 }

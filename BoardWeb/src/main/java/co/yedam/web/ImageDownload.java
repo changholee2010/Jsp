@@ -29,7 +29,7 @@ import com.google.gson.GsonBuilder;
 import co.yedam.common.Control;
 import co.yedam.common.DataSource;
 import co.yedam.mapper.ProductMapper;
-import co.yedam.vo.ProductVO;
+import co.yedam.vo.TemplateVO;
 
 public class ImageDownload implements Control {
 	String sql = "";
@@ -42,7 +42,7 @@ public class ImageDownload implements Control {
 		// 넘어오는 데이터의 모양=> [ {"src":"http","name":"헬리우스"},{},{}]
 
 		Map<String, Object> resultMap = new HashMap<>(); // json 반환하기 위한 맵 생성.
-		ProductVO[] array = null; // 매퍼를 통해서 처리할 때 사용하기 위한 변수.
+		TemplateVO[] array = null; // 매퍼를 통해서 처리할 때 사용하기 위한 변수.
 		int txnCnt = 0; // 처리건수를 확인하고 index로 사용하기.
 
 		ServletInputStream sis = req.getInputStream(); // ajax 호출 시 json 문자열을 읽어들일때 스트림 사용.
@@ -51,14 +51,14 @@ public class ImageDownload implements Control {
 				new TypeReference<List<Map<String, String>>>() {
 				});
 
-		array = new ProductVO[list.size()]; // 배열의 크기를 지정.
+		array = new TemplateVO[list.size()]; // 배열의 크기를 지정.
 
 		for (Map<String, String> map : list) {
 
 			String imgSrc = map.get("src"); // 이미지의 경로. 이미지 다운로드용.
 			String prodName = map.get("name"); // 상품의 이름. 데이터베이스 입력쿼리.
 			String prodDesc = map.get("desc"); // 상품의 간단설명. 데이터베이스 입력쿼리.
-			String prodNo = map.get("id"); // 상품의 간단설명. 데이터베이스 입력쿼리.
+			String prodCode = map.get("id"); // 상품의 간단설명. 데이터베이스 입력쿼리.
 //			String prodContent = map.get("content"); // 상품의 설명. 데이터베이스 입력쿼리.
 
 			// String[] str = name.split("/");
@@ -72,14 +72,19 @@ public class ImageDownload implements Control {
 //			insertQuery(prodNo, prodName, prodDesc);
 
 			// 매퍼를 생성해서 처리하기 위한 배열생성.
-			array[txnCnt++] = new ProductVO(prodNo, prodName, prodDesc);
+			TemplateVO prod = new TemplateVO();
+			prod.setProdCode(prodCode);
+			prod.setProdName(prodName);
+			prod.setProdDesc(prodDesc);
+			prod.setProdImg1(prodName + ".jpg");
 
+			array[txnCnt++] = prod;
 //			fileCreate(src, dir, name);
 
 		}
 
 		// 매퍼사용하여 데이터 생성.
-		executeQuery(array);
+		executeDML(array);
 
 		// 반환할 json 문자열 생성하기.
 		resultMap.put("retCode", "OK");
@@ -94,14 +99,14 @@ public class ImageDownload implements Control {
 	}
 
 	// mapper 실행.
-	public void executeQuery(ProductVO[] array) {
+	public void executeDML(TemplateVO[] array) {
 		SqlSession sqlSession = DataSource.getInstance().openSession(true);
 		ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
 
 		int delCnt = mapper.deleteProdAll();
 		System.out.println("delete cnt " + delCnt);
 
-		int cnt = mapper.insertProduct(array);
+		int cnt = mapper.insertTemplate(array);
 		System.out.println("insert cnt " + cnt);
 	}
 

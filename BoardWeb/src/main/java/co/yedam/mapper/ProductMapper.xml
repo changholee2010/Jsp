@@ -5,14 +5,21 @@
 
 <mapper namespace="co.yedam.mapper.ProductMapper">
 
-  <delete id="deleteProdAll">
-    delete from prod_tbl
-  </delete>
+	<delete id="deleteProdAll">
+  	delete from template_prod
+	</delete>
 
-	<insert id="insertProduct" parameterType="co.yedam.vo.ProductVO">
-		insert into prod_tbl (prod_no, prod_name, prod_desc, creation_date, ord_no)
-		<foreach collection="array" item="prod" open=" select a.*, prod_seq.nextval from ( " separator=" union all " close=" ) a">
-			select #{prod.prodNo}, #{prod.prodName}, #{prod.prodDesc}, sysdate from dual
+	<insert id="insertTemplate" parameterType="co.yedam.vo.TemplateVO">
+		insert into template_prod (prod_no, prod_code, prod_name, prod_desc, prod_content, prod_img1, prod_img2, prod_img3, trial_no) 
+		<foreach collection="array" item="prod" open="select prod_seq.nextval, a.* from ( " close=" ) a" separator=" union all " >
+		  select #{prod.prodCode}, #{prod.prodName}, #{prod.prodDesc}, #{prod.prodContent}, #{prod.prodImg1}, #{prod.prodImg2}, #{prod.prodImg3}, to_char(sysdate, 'rrrr-mm-dd-hh24-mi') from dual
+		</foreach>
+	</insert>
+
+	<insert id="insertTemplate1" parameterType="co.yedam.vo.TemplateVO">
+		insert into template_prod (prod_no, prod_code, trial_no) 
+		<foreach collection="array" item="prod" open="select prod_seq.nextval, a.* from ( " close=" ) a" separator=" union all " >
+		  select #{prod.prodCode}, to_char(sysdate, 'rrrr-mm-dd-hh24-mi') from dual
 		</foreach>
 	</insert>
 
