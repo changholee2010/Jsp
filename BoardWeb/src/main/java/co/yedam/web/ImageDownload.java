@@ -64,7 +64,7 @@ public class ImageDownload implements Control {
 			// String[] str = name.split("/");
 			// String dir = str[0];
 			// name = str[1];
-			String dir = "dongwon";
+			String dir = req.getServletContext().getRealPath("images");
 
 			System.out.println("src: " + imgSrc + ", dir: " + dir + ", name: " + prodName);
 			System.out.println("-----------------------------");
@@ -144,7 +144,8 @@ public class ImageDownload implements Control {
 
 			is = url.openStream();
 			BufferedInputStream bis = new BufferedInputStream(is);
-			String filePath = "c:/temp/" + sdf.format(new Date()) + "/" + saveDir.trim();
+			String filePath = saveDir + "/" + sdf.format(new Date());
+			// "c:/temp/" + sdf.format(new Date()) + "/" + saveDir.trim();
 
 			File file = new File(filePath);
 			if (!file.exists()) {
