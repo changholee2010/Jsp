@@ -10,9 +10,9 @@
 	</delete>
 
 	<insert id="insertTemplate" parameterType="co.yedam.vo.TemplateVO">
-		insert into template_prod (prod_no, prod_code, prod_name, prod_desc, prod_content, prod_img1, prod_img2, prod_img3, trial_no) 
+		insert into template_prod (prod_no, prod_code, prod_name, prod_desc, prod_content, prod_img1, prod_img2, prod_img3, attribute1, trial_no) 
 		<foreach collection="array" item="prod" open="select prod_seq.nextval, a.* from ( " close=" ) a" separator=" union all " >
-		  select #{prod.prodCode}, #{prod.prodName}, #{prod.prodDesc}, #{prod.prodContent}, #{prod.prodImg1}, #{prod.prodImg2}, #{prod.prodImg3}, to_char(sysdate, 'rrrr-mm-dd-hh24-mi') from dual
+		  select #{prod.prodCode}, #{prod.prodName}, #{prod.prodDesc}, #{prod.prodContent}, #{prod.prodImg1}, #{prod.prodImg2}, #{prod.prodImg3}, #{prod.attribute1}, to_char(sysdate, 'rrrr-mm-dd-hh24-mi') from dual
 		</foreach>
 	</insert>
 
@@ -22,5 +22,9 @@
 		  select #{prod.prodCode}, to_char(sysdate, 'rrrr-mm-dd-hh24-mi') from dual
 		</foreach>
 	</insert>
+	
+	<select id="selectCurrentCnt">
+	  select count(1) from template_prod
+	</select>
 
 </mapper>

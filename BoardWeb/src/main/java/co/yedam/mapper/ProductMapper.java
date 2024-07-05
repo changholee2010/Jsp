@@ -6,4 +6,5 @@ public interface ProductMapper {
 	int deleteProdAll();
 	int insertTemplate(TemplateVO[] array);
 	int insertTemplate1(TemplateVO[] array);
+	int selectCurrentCnt();
 }

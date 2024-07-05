@@ -33,6 +33,8 @@ import co.yedam.vo.TemplateVO;
 
 public class ImageDownload implements Control {
 	String sql = "";
+	SqlSession sqlSession = DataSource.getInstance().openSession(true);
+	ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -44,6 +46,7 @@ public class ImageDownload implements Control {
 		Map<String, Object> resultMap = new HashMap<>(); // json 반환하기 위한 맵 생성.
 		TemplateVO[] array = null; // 매퍼를 통해서 처리할 때 사용하기 위한 변수.
 		int txnCnt = 0; // 처리건수를 확인하고 index로 사용하기.
+		int currentCnt = mapper.selectCurrentCnt(); // db에서 생성된 건수를 기준으로 더하기 해야할 때.
 
 		ServletInputStream sis = req.getInputStream(); // ajax 호출 시 json 문자열을 읽어들일때 스트림 사용.
 		ObjectMapper mapper = new ObjectMapper(); // 스트림에서 문자열을 골라서 객체로 변환하기 위해서 작업.
@@ -55,10 +58,15 @@ public class ImageDownload implements Control {
 
 		for (Map<String, String> map : list) {
 
-			String imgSrc = map.get("src"); // 이미지의 경로. 이미지 다운로드용.
+			String imgSrc = map.get("image"); // 이미지의 경로. 이미지 다운로드용.
 			String prodName = map.get("name"); // 상품의 이름. 데이터베이스 입력쿼리.
 			String prodDesc = map.get("desc"); // 상품의 간단설명. 데이터베이스 입력쿼리.
-			String prodCode = map.get("id"); // 상품의 간단설명. 데이터베이스 입력쿼리.
+			prodDesc = prodDesc == null ? "" : prodDesc;
+
+			String prodCode = map.get("id"); // 상품의 id, 시퀀스.
+			String newCode = "P" + ("000" + (currentCnt + 1)).substring(("000" + (currentCnt + 1)).length() - 4);
+			prodCode = prodCode == null ? newCode : prodCode;
+
 //			String prodContent = map.get("content"); // 상품의 설명. 데이터베이스 입력쿼리.
 
 			// String[] str = name.split("/");
@@ -77,8 +85,11 @@ public class ImageDownload implements Control {
 			prod.setProdName(prodName);
 			prod.setProdDesc(prodDesc);
 			prod.setProdImg1(prodName + ".jpg");
+			prod.setAttribute1("LOUNGES");
 
-			array[txnCnt++] = prod;
+			array[txnCnt] = prod;
+			txnCnt++;
+			currentCnt++;
 //			fileCreate(src, dir, name);
 
 		}
@@ -100,11 +111,9 @@ public class ImageDownload implements Control {
 
 	// mapper 실행.
 	public void executeDML(TemplateVO[] array) {
-		SqlSession sqlSession = DataSource.getInstance().openSession(true);
-		ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
 
-		int delCnt = mapper.deleteProdAll();
-		System.out.println("delete cnt " + delCnt);
+//		int delCnt = mapper.deleteProdAll();
+//		System.out.println("delete cnt " + delCnt);
 
 		int cnt = mapper.insertTemplate(array);
 		System.out.println("insert cnt " + cnt);
